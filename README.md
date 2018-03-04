@@ -1,4 +1,4 @@
-# TMDB movies explorer
+# Working with TMBD API
 
 ## Prerequisites
 
