@@ -1,0 +1,5 @@
+.idea/
+environ.sh
+__pycache__/
+db.json
+venv
