@@ -2,16 +2,10 @@ from tmdb_db import load_movies_data_from_file
 from argparse import ArgumentParser
 
 
-def get_movie_by_title(title, movies_data):
-    for movie_data in movies_data.values():
-        if movie_data['details']['title'].lower() == title.lower():
-            return movie_data
-
-
 def get_movies_with_similar_title(requested_title, movies_data):
     result = []
-    for movie_data in movies_data.values():
-        movie_title = movie_data['details']['title']
+    for movie_data in movies_data:
+        movie_title = movie_data['title']
         if movie_title.lower().find(requested_title.lower()) >= 0:
             result.append(movie_title)
     return result

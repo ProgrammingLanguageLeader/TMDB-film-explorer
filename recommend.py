@@ -1,12 +1,17 @@
 from argparse import ArgumentParser
 
 from tmdb_db import load_movies_data_from_file
-from search import get_movie_by_title
+
+
+def get_movie_by_title(title, movies_data):
+    for movie_data in movies_data:
+        if movie_data['title'].lower() == title.lower():
+            return movie_data
 
 
 def get_recommendations(source_movie, movies_data):
     recommendations = set()
-    for movie in movies_data.values():
+    for movie in movies_data:
         if movie == source_movie:
             continue
         movie_lists = set([
@@ -16,7 +21,7 @@ def get_recommendations(source_movie, movies_data):
             result['name'] for result in source_movie['lists']['results']
         ])
         if len(movie_lists & source_movie_lists) > 8:
-            recommendations.add(movie['details']['title'])
+            recommendations.add(movie['title'])
 
         movie_keywords = set([
             keyword['name'] for keyword in movie['keywords']['keywords']
@@ -25,7 +30,7 @@ def get_recommendations(source_movie, movies_data):
             keyword['name'] for keyword in source_movie['keywords']['keywords']
         ])
         if len(movie_keywords & source_movie_keywords) > 3:
-            recommendations.add(movie['details']['title'])
+            recommendations.add(movie['title'])
     return recommendations
 
 

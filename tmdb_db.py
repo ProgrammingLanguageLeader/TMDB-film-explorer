@@ -1,12 +1,9 @@
-from tmdb_api import fetch_movie_details, fetch_movie_keywords, \
-    fetch_movie_lists, fetch_page_with_movies
-import json
+from tmdb_api import fetch_movie_details, fetch_page_with_movies
 from argparse import ArgumentParser
-from collections import defaultdict
+import json
 
 
 def fetch_movies_ids(movies_number):
-    results_on_page = 20
     sort_by = 'popularity.desc'
 
     ids = []
@@ -16,8 +13,8 @@ def fetch_movies_ids(movies_number):
             page_index=current_page,
             sort_by=sort_by
         )
-        for order in range(results_on_page):
-            ids.append(int(page['results'][order]['id']))
+        for result in page['results']:
+            ids.append(int(result['id']))
             if len(ids) == movies_number:
                 break
         current_page += 1
@@ -32,14 +29,9 @@ def load_movies_data_from_file(db_path):
 def fetch_movies_data(movies_number):
     movies_ids = fetch_movies_ids(movies_number)
 
-    movies_data = defaultdict()
-    for movie_id in movies_ids:
-        movie = {
-            'details': fetch_movie_details(movie_id),
-            'lists': fetch_movie_lists(movie_id),
-            'keywords': fetch_movie_keywords(movie_id),
-        }
-        movies_data[movie_id] = movie
+    movies_data = [
+        fetch_movie_details(movie_id) for movie_id in movies_ids
+    ]
     return movies_data
 
 

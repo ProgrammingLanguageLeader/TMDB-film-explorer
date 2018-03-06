@@ -26,23 +26,13 @@ def make_tmdb_api_request(method, api_key, extra_params=None):
 
 
 def fetch_movie_details(movie_id):
+    extra_params = {
+        'append_to_response': 'keywords,lists'
+    }
     return make_tmdb_api_request(
         method='/movie/%d' % movie_id,
-        api_key=TMBD_API_KEY
-    )
-
-
-def fetch_movie_lists(movie_id):
-    return make_tmdb_api_request(
-        method='/movie/%d/lists' % movie_id,
-        api_key=TMBD_API_KEY
-    )
-
-
-def fetch_movie_keywords(movie_id):
-    return make_tmdb_api_request(
-        method='/movie/%d/keywords' % movie_id,
-        api_key=TMBD_API_KEY
+        api_key=TMBD_API_KEY,
+        extra_params=extra_params
     )
 
 
