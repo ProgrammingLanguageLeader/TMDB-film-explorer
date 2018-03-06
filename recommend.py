@@ -10,6 +10,9 @@ def get_movie_by_title(title, movies_data):
 
 
 def get_recommendations(source_movie, movies_data):
+    common_keywords_to_recommend = 4
+    common_lists_to_recommend = 8
+
     recommendations = set()
     for movie in movies_data:
         if movie == source_movie:
@@ -20,7 +23,8 @@ def get_recommendations(source_movie, movies_data):
         source_movie_lists = set([
             result['name'] for result in source_movie['lists']['results']
         ])
-        if len(movie_lists & source_movie_lists) > 8:
+        common_lists = movie_lists & source_movie_lists
+        if len(common_lists) > common_lists_to_recommend:
             recommendations.add(movie['title'])
 
         movie_keywords = set([
@@ -29,7 +33,8 @@ def get_recommendations(source_movie, movies_data):
         source_movie_keywords = set([
             keyword['name'] for keyword in source_movie['keywords']['keywords']
         ])
-        if len(movie_keywords & source_movie_keywords) > 3:
+        common_keywords = movie_keywords & source_movie_keywords
+        if len(common_keywords) > common_keywords_to_recommend:
             recommendations.add(movie['title'])
     return recommendations
 
